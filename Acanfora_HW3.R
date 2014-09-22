@@ -291,3 +291,7 @@ lines(plotFrame$year, plotFrame$highway08)
 plotFrame2 <- aggregate(highway08 ~ drive, vehicleData, FUN = "mean")
 y <- plotFrame2$highway08
 barplot(y, names.arg = plotFrame2$drive, horiz = TRUE, xlab = "Highway Mileage", las = 2, cex.names=.35)
+# one the labels is missing for the bar plot.  I'm assuming it should be "other" but I'm not sure what other types of drive trains there could be.
+# it also could be that the data is simply missing for these values because the value is close to the average.
+
+save(vehicleData, file="vehicleMilage.RData")
