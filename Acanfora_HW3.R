@@ -281,9 +281,9 @@ summary(vehicleData$ghgScoreA)
 # 14 mfrCode - incomplete
 
 
-# Visualization 
-year <- vehicleData$year
-uniqueYears <- unique(year, incomparables = FALSE, mode="list")
-yearList <- as.list(year)
-highwayMileage <- vehicleData$highway08
-highwayMileageByYear <- aggregate(highwayMileage, by = yearList, FUN = "mean")
+# Visualization 1 - highway mileage by year
+plotFrame <- aggregate(highway08 ~ year, vehicleData, FUN = "mean")
+plot(plotFrame$year, plotFrame$highway08)
+title(main="Mean Highway Mileage By Year", font.main=4)
+lines(plotFrame$year, plotFrame$highway08)
+
