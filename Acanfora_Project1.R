@@ -47,6 +47,7 @@ dataset4 <- subset(dataset4, select = -eng_dscr)
 dataset4 <- subset(dataset4, select = -UHighway)
 dataset4 <- subset(dataset4, select = -UHighwayA)
 dataset4 <- subset(dataset4, select = -row.names)
+dataset4 <- subset(dataset4, select = -hpv)
 
 write.csv(dataset4, file = "SmallVehicleData.csv")
 
