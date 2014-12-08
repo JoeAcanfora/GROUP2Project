@@ -3,7 +3,7 @@
 # CMDA
 # Project
 
-setwd("//Users//joeacanfora//Desktop//Virginia Tech//CMDA//GROUP2Project-master")
+setwd("Users/joeacanfora/Desktop/Virginia Tech/CMDA/Repo/GROUP2Project")
 vehicleData <- read.csv("vehicles.csv", header=TRUE, sep=",")
 
 dataset <- vehicleData[vehicleData$year >= 2005,] # drop vehicles before 2005
@@ -49,7 +49,7 @@ dataset4 <- subset(dataset4, select = -UHighwayA)
 dataset4 <- subset(dataset4, select = -row.names)
 dataset4 <- subset(dataset4, select = -hpv)
 
-write.csv(dataset4, file = "SmallVehicleData.csv")
+write.csv(dataset4, file = "SmallerVehicleData.csv")
 
 
 
