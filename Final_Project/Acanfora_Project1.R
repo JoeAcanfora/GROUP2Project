@@ -3,7 +3,7 @@
 # CMDA
 # Project
 
-setwd("Users/joeacanfora/Desktop/Virginia Tech/CMDA/Repo/GROUP2Project")
+setwd("/Users/joeacanfora/Desktop/Virginia Tech/CMDA/Repo/GROUP2Project/Final_Project")
 vehicleData <- read.csv("vehicles.csv", header=TRUE, sep=",")
 
 dataset <- vehicleData[vehicleData$year >= 2005,] # drop vehicles before 2005
@@ -50,6 +50,113 @@ dataset4 <- subset(dataset4, select = -row.names)
 dataset4 <- subset(dataset4, select = -hpv)
 
 write.csv(dataset4, file = "SmallerVehicleData.csv")
+
+SmallerVehicleData <- read.csv("SmallerVehicleData.csv", header=TRUE, sep=",")
+
+#determine if we can drop electric vehicles
+#average cab driver goes 200 miles per shift
+#determine the range of the given electric vehicles
+unique(SmallerVehicleData$fuelType)
+electricVehicles = SmallerVehicleData[SmallerVehicleData$fuelType == "Electricity",]
+longRangeE = electricVehicles[electricVehicles$range > 200, ]
+# the only electric vehicles with sufficent range are luxury vehicles (Tesla)
+
+unique(SmallerVehicleData$make)
+#eliminate luxury vehicles
+noLux = SmallerVehicleData[SmallerVehicleData$make != "Jaguar", ]
+noLux = noLux[noLux$make != "Aston Martin", ]
+noLux = noLux[noLux$make != "Audi", ]
+noLux = noLux[noLux$make != "BMW", ]
+noLux = noLux[noLux$make != "Lexus", ]
+noLux = noLux[noLux$make != "MINI", ]
+noLux = noLux[noLux$make != "Porsche", ]
+noLux = noLux[noLux$make != "Acura", ]
+noLux = noLux[noLux$make != "Maserati", ]
+noLux = noLux[noLux$make != "Mercedes-Benz", ]
+noLux = noLux[noLux$make != "Saab", ]
+noLux = noLux[noLux$make != "Bentley", ]
+noLux = noLux[noLux$make != "Infiniti", ]
+noLux = noLux[noLux$make != "Ferrari", ]
+noLux = noLux[noLux$make != "Rolls-Royce", ]
+noLux = noLux[noLux$make != "Land Rover", ]
+noLux = noLux[noLux$make != "Alfa Romeo", ]
+noLux = noLux[noLux$make != "Lotus", ]
+noLux = noLux[noLux$make != "Tesla", ]
+
+#Eliminating Vehicles who do not have enough space
+#Sport Utility Vehicle - 4WD
+#Special Purpose Vehicle 2WD
+#Mini Compact Cars
+#Compact Cars
+#Sub Compact Cars
+#Small Station Wagons
+#Standard Pickup Trucks 2WD
+#Standard Pickup Trucks 4WD
+#Small Pickup Trucks 2WD
+#Small Pickup Trucks 4WD
+#Vans, Cargo Type
+#Vans, Passenger Type
+vClass = noLux[noLux$VClass != "Sport Utility Vehicle - 4WD", ]
+vClass = vClass[vClass$VClass != "Special Purpose Vehicle 2WD", ]
+vClass = vClass[vClass$VClass != "Minicompact Cars", ]
+vClass = vClass[vClass$VClass != "Compact Cars", ]
+vClass = vClass[vClass$VClass != "Subcompact Cars", ]
+vClass = vClass[vClass$VClass != "Small Station Wagons", ]
+vClass = vClass[vClass$VClass != "Standard Pickup Trucks 2WD", ]
+vClass = vClass[vClass$VClass != "Standard Pickup Trucks 4WD", ]
+vClass = vClass[vClass$VClass != "Small Pickup Trucks 2WD", ]
+vClass = vClass[vClass$VClass != "Small Pickup Trucks 4WD", ]
+vClass = vClass[vClass$VClass != "Vans, Cargo Type", ]
+vClass = vClass[vClass$VClass != "Vans, Passenger Type", ]
+
+write.csv(vClass, file = "checkDriveType.csv")
+
+#drive type
+frontWheel = vClass[vClass$drive == "Front-Wheel Drive", ]
+cheapGas = frontWheel[frontWheel$fuelType == "Regular", ]
+
+cheapGas = subset(cheapGas, select = -charge120)
+cheapGas = subset(cheapGas, select = -charge240)
+
+write.csv(cheapGas , file = "checkCylinder.csv")
+
+smallBlock = cheapGas[cheapGas$cylinders != 6, ]
+smallBlock = smallBlock[smallBlock$cylinders != 8, ]
+
+auto = smallBlock[smallBlock$trany != "Manual 5-spd", ]
+auto = auto[auto$trany != "Manual 6-spd", ]
+auto = auto[auto$trany != "Manual(M5)", ]
+
+newer = auto[auto$year > 2011, ]
+
+newer = subset(newer, select = -fuelCostA08)
+newer = subset(newer, select = -combE)
+newer = subset(newer, select = -cityUF)
+newer = subset(newer, select = -cityE)
+newer = subset(newer, select = -cityCD)
+newer = subset(newer, select = -cityA08)
+
+cheaper = newer[newer$youSaveSpend > 0, ]
+
+write.csv(cheaper, file = "getting close.csv")
+
+hybrids = cheaper[cheaper$atvType == "Hybrid", ]
+regular = cheaper[cheaper$atvType != "Hyrbid", ]
+
+write.csv(hybrids, file = "hybrids.csv")
+
+
+regular = subset(regular, select = -range)
+regular = subset(regular, select = -rangeCity)
+regular = subset(regular, select = -rangeCityA)
+regular = subset(regular, select = -rangeHwy)
+regular = subset(regular, select = -rangeHwyA)
+regular = subset(regular, select = -guzzler)
+regular = regular[regular$atvType == "", ]
+
+write.csv(regular, file = "regular.csv")
+
+vans = regular[regular$VClass == "Mini Vans", ]
 
 
 
